@@ -1,20 +1,19 @@
 import Cocoa
 
-struct Employee {
-	let name: String
-	var vacayAllocated = 14
-	var vacayTaken = 0
-	var vacayRemaining: Int {
-		get {
-			vacayAllocated - vacayTaken
-		}
-		set {
-			vacayAllocated = vacayTaken + newValue
-		}
+
+
+
+
+class Vehicle {
+	let isElectric: Bool
+	
+	init(isElectric: Bool) {
+		self.isElectric = isElectric
 	}
 }
 
-var archer = Employee(name: "Sterling Archer", vacayAllocated: 10)
-archer.vacayTaken += 4
-archer.vacayRemaining = 5
-print(archer.vacayAllocated)
+class Car: Vehicle {
+	let isConvertable = false
+	
+}
+let honda = Car(isElectric: false)
