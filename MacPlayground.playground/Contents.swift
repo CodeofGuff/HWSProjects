@@ -3,17 +3,15 @@ import Cocoa
 
 
 
-
-class Vehicle {
-	let isElectric: Bool
-	
-	init(isElectric: Bool) {
-		self.isElectric = isElectric
+func sumOfPositives (_ numbers: [Int] ) -> Int {
+	var total  = 0
+	for i in numbers {
+		if i > 0 {
+			total += i
+		}
+		print(total)
 	}
+	return total
 }
 
-class Car: Vehicle {
-	let isConvertable = false
-	
-}
-let honda = Car(isElectric: false)
+sumOfPositives( [1, 2, 3, 4, 5, -8, -10] )
