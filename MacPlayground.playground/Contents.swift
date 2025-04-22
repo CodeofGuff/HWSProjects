@@ -3,15 +3,14 @@ import Cocoa
 
 
 
-func sumOfPositives (_ numbers: [Int] ) -> Int {
-	var total  = 0
-	for i in numbers {
-		if i > 0 {
-			total += i
-		}
-		print(total)
-	}
-	return total
+func menFromBoys(_ arr: [Int]) -> [Int] {
+	
+	Array(Set(arr.filter { $0 % 2 == 0 })).sorted() + Array(Set(arr.filter { $0 % 2 != 0 })).sorted(by: <)
+	
+	
 }
 
-sumOfPositives( [1, 2, 3, 4, 5, -8, -10] )
+
+print(menFromBoys([12, 25, 3, 4, 5, 5, 6, 7, 7, 8]))
+
+
