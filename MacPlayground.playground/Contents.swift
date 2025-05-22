@@ -1,16 +1,22 @@
 import Cocoa
 
 
-
-
-func menFromBoys(_ arr: [Int]) -> [Int] {
-	
-	Array(Set(arr.filter { $0 % 2 == 0 })).sorted() + Array(Set(arr.filter { $0 % 2 != 0 })).sorted(by: <)
-	
-	
+func getGrade(_ s1: Int, _ s2: Int, _ s3: Int) -> String {
+	var average = (s1 + s2 + s3) / 3
+	print("Your grade this semester is: \(average)")
+	switch average {
+		case 90...100:
+		return "A"
+	case 80..<90:
+		return "B"
+	case 70..<80:
+		return "C"
+	case 60..<70:
+		return "D"
+	default:
+		return "F"
+	}
 }
 
 
-print(menFromBoys([12, 25, 3, 4, 5, 5, 6, 7, 7, 8]))
-
-
+getGrade(79, 88, 100)
