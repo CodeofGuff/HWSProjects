@@ -6,15 +6,18 @@
 //
 import SwiftUI
 
-
 struct ContentView: View {
 	@State private var checkAmount: Double = 0
-	@State private var numberOfPeople = 1
+	@State private var numberOfPeople = 2
 	@State private var tipPercentage = 15
 	@FocusState private var amountIsFocused: Bool
 
-	let tipPercentages = [0, 10, 15, 20, 25]
-	
+	var billAmount: Double {
+		let tipValue = (checkAmount / 100) * Double(tipPercentage)
+		let total = checkAmount + tipValue
+		return total
+	}
+
 	var totalPerPerson: Double {
 		let peopleCount = Double(numberOfPeople)
 		let tipSelection = Double(tipPercentage)
@@ -23,44 +26,55 @@ struct ContentView: View {
 		let amountPerPerson = total / peopleCount
 		return amountPerPerson
 	}
-	
-	
+
 	var body: some View {
-		NavigationStack{
+		NavigationStack {
 			Form {
 				Section("Enter the bill total and amount of people") {
 					TextField("Check amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
 						.keyboardType(.decimalPad)
 						.focused($amountIsFocused)
-						
-					
+
 					Picker("Number of people", selection: $numberOfPeople) {
-						ForEach(1..<100, id: \.self) {
+						ForEach(2..<100, id: \.self) {
 							Text("\($0) people")
 						}
 					}
 				}
-				
-				Section("How much would you like to tip?" ){
+
+				Section("How much would you like to tip?") {
 					Picker("Tip percentage", selection: $tipPercentage) {
-						ForEach(tipPercentages, id: \.self) { percentage in
-							Text("\(percentage)%")
+						ForEach(1..<101, id: \.self) {
+							Text($0, format: .percent)
 						}
 					}
-					.pickerStyle(.segmented)
+					.pickerStyle(.automatic)
 				}
-				
+
 				Section("How much each person pays:") {
 					Text(
 						totalPerPerson,
 						format:
-								.currency(
-									code: Locale.current.currency?.identifier ?? "USD"
-								)
+						.currency(code: Locale.current.currency?.identifier ?? "USD")
 					)
 				}
-				
+
+				Section("Total check amount") {
+					Text(
+						billAmount,
+						format:
+						.currency(code: Locale.current.currency?.identifier ?? "USD")
+					)
+				}
 			}
+
+			.background(
+				LinearGradient(
+					colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)],
+					startPoint: .topLeading,
+					endPoint: .bottomTrailing
+				)
+			)
 			.navigationTitle("WeSplit")
 			.toolbar {
 				if amountIsFocused {
@@ -69,15 +83,11 @@ struct ContentView: View {
 					}
 				}
 			}
-
 		}
-		
-		
+		.background(Color(.blue))
 	}
 }
-
 
 #Preview {
 	ContentView()
 }
-
