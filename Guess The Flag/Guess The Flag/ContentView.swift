@@ -8,59 +8,79 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State private var counter = 0
-	@State private var showingAlert = false
-	@State private var showingAlert2 = false
+	@State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
+	@State private var correctAnswer = Int.random(in: 0 ... 2)
+	@State private var showingScore = false
+	@State private var scoreTitle = ""
+	@State private var score = 0
 
 	var body: some View {
-		Spacer()
-		Spacer()
-		Button {
-			counter += 1
-			print("Button was tapped \(counter) times!")
-			resetCounter()
-		} label: {
+		ZStack {
+			RadialGradient(stops: [
+				.init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
+				.init(color: Color(red: 0.76, green: 0.16, blue: 0.2), location: 0.3),
+				.init(color: Color(red: 0.1, green: 0.3, blue: 0.45), location: 5)
+
+			], center: .top, startRadius: 200, endRadius: 700)
+				.ignoresSafeArea()
+
 			VStack {
-				Text("Push me")
-					.padding(-7)
-				Image("US")
-					.cornerRadius(10)
-					.padding(10)
-					.background(.blue)
-					.cornerRadius(20)
-			}
-		}
-		.alert("You did it! You reset the counter!", isPresented: $showingAlert2) {}
+				Spacer()
+				Text("Guess the Flag")
+					.font(.largeTitle.bold())
+					.foregroundStyle(.white)
 
-		Spacer()
+				VStack(spacing: 15) {
+					VStack {
+						Text("Tap the flag of:")
+							.foregroundStyle(.secondary)
+							.font(.subheadline.weight(.semibold))
 
-		Text("You have pushed the button this many times:")
-		Text(counter.description)
-		Button(role: .destructive) {
-			showingAlert = true
-		} label: {
-			Text("Reset Counter")
-				.padding()
-				.background(.black)
-				.cornerRadius(20)
-		}
-		.alert("Reset clicks?!", isPresented: $showingAlert) {
-			Button("Yeah...", role: .destructive) {
-				counter = 0
-				print("Button was reset to 0")
+						Text(countries[correctAnswer])
+							.font(.largeTitle.weight(.semibold))
+					}
+					ForEach(0 ..< 3) { number in
+						Button {
+							flagTapped(number)
+							number == correctAnswer ? score += 1 : print("Wrong")
+
+						} label: {
+							Image(countries[number])
+								.clipShape(.capsule)
+								.shadow(radius: 5)
+						}
+					}
+				}
+
+				.frame(maxWidth: .infinity)
+				.padding(.vertical, 20)
+				.background(.regularMaterial)
+				.clipShape(.rect(cornerRadius: 20))
+
+				Spacer()
+				Spacer()
+				Text("Score: \(score)")
+					.foregroundStyle(.white)
+					.font(.title.bold())
+				Spacer()
 			}
-			Button("UNDO!!!", role: .cancel) {}
+			.padding(25)
+		}
+		.alert(scoreTitle, isPresented: $showingScore) {
+			Button("Continue", action: askQuestion)
 		} message: {
-			Text("Are you sure you want to reset the counter?")
+			Text("You score is: \(score)")
 		}
-		Spacer()
 	}
 
-	func resetCounter() {
-		if counter > 20 {
-			counter = 0
-			showingAlert2 = true
-		}
+	func flagTapped(_ number: Int) {
+		scoreTitle = number == correctAnswer ? "Correct" : "Wrong"
+		showingScore = true
+	}
+
+	func askQuestion() {
+		countries.shuffle()
+		correctAnswer = Int.random(in: 0 ... 2)
 	}
 }
 
