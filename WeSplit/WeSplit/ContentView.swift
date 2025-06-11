@@ -80,10 +80,10 @@ struct ContentView: View {
 							ModernSection(title: "Bill Amount", icon: "dollarsign.circle.fill") {
 								VStack(spacing: 16) {
 									TextField("Enter amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+										.keyboardType(.decimalPad)
 										.font(.title2.weight(.semibold))
 										.foregroundColor(.white)
 										.multilineTextAlignment(.center)
-										.keyboardType(.decimalPad)
 										.focused($amountIsFocused)
 										.padding(16)
 										.background(
