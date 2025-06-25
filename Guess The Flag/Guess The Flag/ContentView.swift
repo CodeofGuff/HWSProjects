@@ -65,7 +65,7 @@ struct ContentView: View {
 				Text("Score: \(score)")
 					.foregroundStyle(.white)
 					.font(.title.bold())
-				Spacer()
+				Spacer()		
 			}
 			.padding(25)
 		}
@@ -77,7 +77,7 @@ struct ContentView: View {
 		.alert(alertTitle, isPresented: $gameOver) {
 			Button("New Game", action: restart)
 		} message: {
-			Text("congrats! you won!")
+			Text("Congrats, you won!")
 		}
 	}
 
